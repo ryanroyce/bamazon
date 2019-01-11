@@ -7,7 +7,7 @@ const cTable = require('console.table');
 const connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
-    user: "ryanminor",
+    user: "",
     password: "",
     database: "bamazon"
 });
@@ -23,15 +23,15 @@ function start() {
     // with the bamazon database put in mysql command to select from the products table
     // greatbay activity was really helpful with this part    
     connection.query(
-        'SELECT * FROM products', function (err, results) {
+        'SELECT * FROM products', function (err, res) {
             if (err) throw err;
             // displays the table from mysql
-            console.table(results);
+            console.table(res);
             // Define choice array to add products
             var productArr = [];
             //create choices for each item
-            for (var i = 0; i < results.length; i++) {
-                productArr.push(results[i].product_name)
+            for (var i = 0; i < res.length; i++) {
+                productArr.push(res[i].product_name)
             }
             //using the inquirer package, create the questions that will be used in the initial prompts
             inquirer.prompt([
@@ -45,8 +45,15 @@ function start() {
                     type: 'input',
                     name: 'buy',
                     message: 'How many units would you like to buy?',
+                    // to ensure that only numbers are used as input
+                    validate: function (value) {
+                        if (isNaN(value) === false) {
+                            return true;
+                        }
+                        return false;
+                    }
                 }
-            ]);
+            ])
         }
     );
 };
