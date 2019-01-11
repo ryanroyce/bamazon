@@ -2,16 +2,16 @@ CREATE DATABASE bamazon;
 
 USE bamazon;
 
-CREATE TABLE products (
- id INT NOT NULL AUTO_INCREMENT,
- product_name VARCHAR(50) NOT NULL,
- department_name VARCHAR(50) NOT NULL,
- price DECIMAL(10,2) NOT NULL,
- stock_quantity INT NULL NOT NULL,
- PRIMARY KEY (id)
+CREATE TABLE products(
+item_id INTEGER AUTO_INCREMENT NOT NULL,
+PRIMARY KEY (item_id),
+product_name VARCHAR(50) NOT NULL,
+department_name VARCHAR(50) NOT NULL,
+price DECIMAL(10,2) NOT NULL,
+stock_quantity INTEGER(20) NOT NULL
 );
 
-Select * from products;
+SELECT * FROM products;
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ('Ray Bans','Accessories',150.00, 200),
