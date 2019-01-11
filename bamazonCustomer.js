@@ -7,8 +7,8 @@ const cTable = require('console.table');
 const connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
-    user: "ryanminor",
-    password: "limabean13",
+    user: "",
+    password: "",
     database: "bamazon"
 });
 // confirming the connection in the CLI
@@ -80,32 +80,11 @@ function start() {
                                 if (err) throw err;
                                 console.log('\nORDER PLACED!');
                                 console.log(`YOUR TOTAL IS: $${totalCost}\n`);
-                                shopping();
                             });
                     }
                     else {
                         console.log("\nINSUFFICIENT QUANTITY!\n");
-                        shopping();
                     }
                 });
-        }
-    );
+        });
 };
-
-function shopping() {
-    inquirer.prompt([
-        {
-            type: 'rawlist',
-            message: 'CONTINUE SHOPPING?',
-            name: 'stillshopping',
-            choices: ['YES', 'NO']
-        }
-    ]).then((purchase) => {
-        if (purchase.stillshopping === 'yes') {
-            start();
-        } else {
-            console.log("\nGOODBYE FROM BAMAZON!\n");
-            connection.end();
-        }
-    })
-}
