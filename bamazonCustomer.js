@@ -7,8 +7,8 @@ const cTable = require('console.table');
 const connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
-    user: "",
-    password: "",
+    user: "ryanminor",
+    password: "limabean13",
     database: "bamazon"
 });
 // confirming the connection in the CLI
@@ -78,12 +78,43 @@ function start() {
                             ],
                             function (err) {
                                 if (err) throw err;
-                                console.log('\nORDER PLACED!');
-                                console.log(`YOUR TOTAL IS: $${totalCost}\n`);
+                                // console logs to confirm order is placed and to display the total
+                                console.log(`\nORDER PLACED!\nYOUR TOTAL IS: $${totalCost}\n`);
+                                inquirer.prompt([
+                                    {
+                                        type: 'rawlist',
+                                        message: 'CONTINUE SHOPPING?',
+                                        name: 'continue',
+                                        choices: ['YES', 'NO']
+                                    }
+                                ]).then((purchase) => {
+                                    if (purchase.continue === 'YES') {
+                                        start();
+                                    } else {
+                                        console.log("\nGOODBYE FROM BAMAZON!\n");
+                                        connection.end();
+                                    }
+                                })
                             });
                     }
+                    // else statement if quantity purchased is greater than quantity available
                     else {
                         console.log("\nINSUFFICIENT QUANTITY!\n");
+                        inquirer.prompt([
+                            {
+                                type: 'rawlist',
+                                message: 'CONTINUE SHOPPING?',
+                                name: 'continue',
+                                choices: ['YES', 'NO']
+                            }
+                        ]).then((purchase) => {
+                            if (purchase.continue === 'YES') {
+                                start();
+                            } else {
+                                console.log("\nGOODBYE FROM BAMAZON!\n");
+                                connection.end();
+                            }
+                        })
                     }
                 });
         });
