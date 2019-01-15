@@ -80,42 +80,35 @@ function start() {
                                 if (err) throw err;
                                 // console logs to confirm order is placed and to display the total
                                 console.log(`\nORDER PLACED!\nYOUR TOTAL IS: $${totalCost}\n`);
-                                inquirer.prompt([
-                                    {
-                                        type: 'rawlist',
-                                        message: 'CONTINUE SHOPPING?',
-                                        name: 'continue',
-                                        choices: ['YES', 'NO']
-                                    }
-                                ]).then((purchase) => {
-                                    if (purchase.continue === 'YES') {
-                                        start();
-                                    } else {
-                                        console.log("\nGOODBYE FROM BAMAZON!\n");
-                                        connection.end();
-                                    }
-                                })
+                            //    from previous commit we made DRY code and stored the inquirer prompts in a function
+                                contShop();
                             });
                     }
                     // else statement if quantity purchased is greater than quantity available
                     else {
                         console.log("\nINSUFFICIENT QUANTITY!\n");
-                        inquirer.prompt([
-                            {
-                                type: 'rawlist',
-                                message: 'CONTINUE SHOPPING?',
-                                name: 'continue',
-                                choices: ['YES', 'NO']
-                            }
-                        ]).then((purchase) => {
-                            if (purchase.continue === 'YES') {
-                                start();
-                            } else {
-                                console.log("\nGOODBYE FROM BAMAZON!\n");
-                                connection.end();
-                            }
-                        })
+                        // again asks the user if they would like to continue shopping
+                        contShop();
                     }
                 });
         });
+};
+// DRY code to consolidate the continue shopping prompts
+function contShop(){
+    inquirer.prompt([
+        {
+            type: 'rawlist',
+            message: 'CONTINUE SHOPPING?',
+            name: 'continue',
+            choices: ['YES', 'NO']
+        }
+    ]).then((purchase) => {
+        if (purchase.continue === 'YES') {
+            start();
+        } 
+        else {
+            console.log("\nGOODBYE FROM BAMAZON!\n");
+            connection.end();
+        }
+    })
 };
